@@ -32,6 +32,16 @@
   <a href="#" class="btn btn-primary">Advanced Shipment Interface</a>
 {% endblock %}
 {% block content %}
+{% if success %}
+  <div class="alert alert-success" role="alert">
+    {{ success }}
+  </div>
+{% endif %}
+{% if error %}
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+{% endif %}
 <div class="form-group">
     <form method="post">
       <h4>
