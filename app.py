@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 @app.errorhandler(404)
-def page_not_found(e):
+def page_not_found():
     return render_template('404.html'), 404
 
 
@@ -78,6 +78,7 @@ def shipments_create():
             query=constants.UPDATE_INVENTORY_QUERY,
             args=(quantity, item_id)  # Has to be flipped due to SQL syntax; see constants.py
         )
+        conn.commit()
         conn.close()
         return render_template('shipments/create.html', items=items, success="Shipment created successfully!")
     return render_template('shipments/create.html', items=items)
@@ -130,6 +131,7 @@ def shipments_advanced():
             query=constants.UPDATE_INVENTORY_QUERY,
             args=[(update[1], update[0]) for update in item_updates]
         )
+        conn.commit()
         # Update displayed inventory
         inventory = db.execute_query(
             conn=conn,
@@ -175,6 +177,7 @@ def manage_create():
             query=constants.CREATE_INVENTORY_QUERY,
             args=(cur.lastrowid,)
         )
+        conn.commit()
         conn.close()
         return render_template('manage/create.html', success=f"Item {name} (ID {cur.lastrowid}) created successfully!")
     return render_template('manage/create.html')
@@ -217,6 +220,7 @@ def manage_edit_item(item_id):
             query=constants.UPDATE_ITEM_QUERY,
             args=(name, description, price, item_id)
         )
+        conn.commit()
         item = db.execute_query(
             conn=conn,
             query=constants.GET_ITEM_QUERY,
@@ -242,13 +246,13 @@ def manage_delete():
             item_deletes = [(key.split('-')[0],) for key in request.form]
         except ValueError:
             return render_template('manage/delete.html', items=items, error="Invalid form input; check your POST data.")
-        print(item_deletes)
         conn = db.get_db_connection()
         db.execute_many(
             conn=conn,
             query=constants.DELETE_ITEM_QUERY,
             args=item_deletes
         )
+        conn.commit()
         items = db.execute_query(
             conn=conn,
             query=constants.GET_ITEMS_QUERY
