@@ -63,7 +63,7 @@ def shipments_create():
             args=(item_id,)
         ).fetchone()['quantity'])
         # If the user does not have enough inventory, close and terminate early
-        if stock + quantity < 0:
+        if stock - quantity < 0:
             conn.close()
             return render_template('shipments/create.html', items=items,
                                    error=f"You don't have enough inventory to do that! ({stock} available)")
@@ -244,3 +244,4 @@ def manage_delete():
 
 if __name__ == '__main__':
     app.run()
+    # app.run('0.0.0.0')  # For Replit
