@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Crudder - Manage{% endblock %}
+{% block title %}Crudder - Delete{% endblock %}
 {% block sidebar %}
   <li class="nav-item">
     <a class="nav-link" href="/index">
@@ -14,7 +14,7 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="/manage">
+    <a class="nav-link" href="/manage">
       <span data-feather="check-square"></span>
       Manage
     </a>
@@ -29,7 +29,7 @@
         Edit
       </a>
       </li>
-      <li class="nav-item"><a class="nav-link" href="/manage/delete">
+      <li class="nav-item"><a class="nav-link active" aria-current="page" href="/manage/delete">
         <span data-feather="trash-2"></span>
         Delete
       </a>
@@ -37,15 +37,4 @@
     </ul>
   </li>
 {% endblock %}
-{% block header %}Manage Inventory{% endblock %}
-{% block content %}
-    <p>Select the operation you would like to perform:</p>
-    <ul class="list-group">
-      <li class="list-group-item"><a href="/manage/create" class="btn btn-outline-primary">
-          Create New Item</a></li>
-      <li class="list-group-item"><a href="/manage/edit" class="btn btn-outline-primary">
-          Edit Existing Item</a></li>
-      <li class="list-group-item"><a href="/manage/delete" class="btn btn-outline-primary">
-          Delete Item</a></li>
-    </ul>
-{% endblock %}
+{% block header %}Delete Item{% endblock %}
