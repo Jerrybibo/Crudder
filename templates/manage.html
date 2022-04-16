@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block sidebar %}
+  <li class="nav-item">
+    <a class="nav-link" href="/index">
+      <span data-feather="home"></span>
+      Dashboard
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/shipments">
+      <span data-feather="truck"></span>
+      Shipments
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="/manage">
+      <span data-feather="check-square"></span>
+      Manage
+    </a>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link" href="/manage/create">
+        <span data-feather="plus-square"></span>
+        Create new
+      </a>
+      </li>
+      <li class="nav-item"><a class="nav-link" href="/manage/edit">
+        <span data-feather="edit"></span>
+        Edit
+      </a>
+      </li>
+      <li class="nav-item"><a class="nav-link" href="/manage/delete">
+        <span data-feather="trash-2"></span>
+        Delete
+      </a>
+      </li>
+    </ul>
+  </li>
+{% endblock %}
+{% block header %}Manage Inventory{% endblock %}
+{% block content %}
+
+{% endblock %}
