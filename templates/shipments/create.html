@@ -28,3 +28,35 @@
   </li>
 {% endblock %}
 {% block header %}Create New Shipment{% endblock %}
+{% block task_buttons %}
+  <a href="#" class="btn btn-primary">Advanced Shipment Interface</a>
+{% endblock %}
+{% block content %}
+<div class="form-group">
+    <form method="post">
+      <h4>
+        <label>I am
+          <select name="direction">
+            <option value="out">sending</option>
+            <option value="in">receiving</option>
+          </select> a shipment
+        </label> of
+        <label>quantity
+          <input type="number" name="quantity" min="1" max="1000000" required>
+        </label> for the following
+        <label for="item">item:</label>
+      </h4>
+      <h4>
+        <select id="item" name="id">
+          {% for item in items %}
+            <option value="{{ item.id }}">{{ item.id }} - {{ item.name }}</option>
+          {% endfor %}
+        </select>
+      </h4>
+      <h1>
+      <button type="submit" class="btn btn-primary me-2">Submit</button>
+      <a href="/shipments"><button type="button" class="btn btn-outline-danger">Cancel</button></a>
+      </h1>
+    </form>
+</div>
+{% endblock %}

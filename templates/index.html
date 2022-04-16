@@ -20,7 +20,7 @@
     </a>
   </li>
 {% endblock %}
-{% block header %}Overview{% endblock %}
+{% block header %}Inventory Overview{% endblock %}
 {% block content %}
 
   <div class="table-responsive">
@@ -28,24 +28,22 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Product Name</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
           <th scope="col">Quantity</th>
           <th scope="col">Price</th>
         </tr>
       </thead>
       <tbody>
+      {% for item in inventory %}
         <tr>
-          <td>12</td>
-          <td>Copy Paper</td>
-          <td>10</td>
-          <td>$12.99</td>
+          <td>{{ item["id"] }}</td>
+          <td>{{ item["name"] }}</td>
+          <td>{{ item["description"] }}</td>
+          <td>{{ item["quantity"] }}</td>
+          <td>{{ "${:.2f}".format(item["price"]) }}</td>
         </tr>
-        <tr>
-          <td>39</td>
-          <td>Roller Skates</td>
-          <td>3</td>
-          <td>$79.99</td>
-        </tr>
+      {% endfor %}
       </tbody>
     </table>
   </div>

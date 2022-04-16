@@ -36,32 +36,27 @@
     <table class="table table-striped table-sm">
       <thead>
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Product Name</th>
+          <th scope="col">Shipment ID</th>
+          <th scope="col">Item ID</th>
+          <th scope="col">Item Name</th>
           <th scope="col">Qty. Change</th>
           <th scope="col">Timestamp</th>
         </tr>
       </thead>
       <tbody>
+      {% for shipment in shipments %}
         <tr>
-          <td>12</td>
-          <td>Copy Paper</td>
-          <td>-2</td>
-          <td>(timestamp format)</td>
+          <td>{{ shipment["shipment_id"] }}</td>
+          <td>{{ shipment["item_id"] }}</td>
+          <td>{{ shipment["name"] }}</td>
+            {% if shipment["quantity"] > 0 %}
+              <td><span class="text-success">+{{ shipment["quantity"] }}</span></td>
+            {% else %}
+              <td><span class="text-danger">{{ shipment["quantity"] }}</span></td>
+            {% endif %}
+          <td>{{ shipment["time_created"] }}</td>
         </tr>
-        <tr>
-          <td>12</td>
-          <td>Copy Paper</td>
-          <td>+12</td>
-          <td>(timestamp format)</td>
-        </tr>
-        <tr>
-          <td>39</td>
-          <td>Roller Skates</td>
-          <td>+3</td>
-          <td>(timestamp format)</td>
-        </tr>
-      </tbody>
+      {% endfor %}</tbody>
     </table>
   </div>
 {% endblock %}

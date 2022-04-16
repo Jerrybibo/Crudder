@@ -1,5 +1,7 @@
-from flask import Flask, render_template
-from constants import *
+from flask import Flask, render_template, request
+
+import constants
+import db
 
 app = Flask(__name__)
 
@@ -12,22 +14,60 @@ def page_not_found(e):
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    conn = db.get_db_connection()
+    inventory = db.execute_query(
+        conn=conn,
+        query=constants.GET_INVENTORY_QUERY
+    ).fetchall()
+    conn.close()
+    return render_template('index.html', inventory=inventory)
 
 
 @app.route('/shipments')
 def shipments():
-    return render_template('shipments.html')
+    conn = db.get_db_connection()
+    shipments_data = db.execute_query(
+        conn=conn,
+        query=constants.GET_SHIPMENTS_QUERY
+    ).fetchall()
+    conn.close()
+    return render_template('shipments.html', shipments=shipments_data)
 
 
-@app.route('/shipments/create')
+@app.route('/shipments/create', methods=['GET', 'POST'])
 def shipments_create():
-    return render_template('shipments/create.html')
+    if request.method == 'POST':
+        item_id = request.form['id']
+        quantity = int(request.form['quantity'])
+        if request.form['direction'] == 'out':
+            quantity *= -1
+        conn = db.get_db_connection()
+        db.execute_query(
+            conn=conn,
+            query=constants.CREATE_SHIPMENT_QUERY,
+            args=(item_id, quantity)
+        )
+        conn.commit()
+        conn.close()
+        return render_template('shipments/create.html')
+    conn = db.get_db_connection()
+    items = db.execute_query(
+        conn=conn,
+        query=constants.GET_ITEMS_QUERY
+    ).fetchall()
+    conn.close()
+    return render_template('shipments/create.html', items=items)
 
 
 @app.route('/manage')
 def manage():
-    return render_template('manage.html')
+    conn = db.get_db_connection()
+    items = db.execute_query(
+        conn=conn,
+        query=constants.GET_ITEMS_QUERY
+    ).fetchall()
+    conn.close()
+    return render_template('manage.html', items=items)
 
 
 @app.route('/manage/create')
