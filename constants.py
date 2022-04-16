@@ -1,5 +1,7 @@
 GET_INVENTORY_QUERY = "SELECT id, name, description, quantity, price FROM inventory, items WHERE id = item_id;"
 
+CREATE_INVENTORY_QUERY = "INSERT INTO inventory (item_id, quantity) VALUES (?, 0);"
+
 GET_SHIPMENTS_QUERY = """SELECT shipments.id as shipment_id, item_id, name, quantity, time_created
                          FROM shipments, items
                          WHERE item_id = items.id

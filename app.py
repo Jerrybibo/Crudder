@@ -152,8 +152,31 @@ def manage():
     return render_template('manage.html', items=items)
 
 
-@app.route('/manage/create')
+@app.route('/manage/create', methods=['GET', 'POST'])
 def manage_create():
+    if request.method == 'POST':
+        name, description, price = request.form['name'], request.form['description'], request.form['price']
+        try:
+            price = float(price)
+            if not all((name, description, price)):
+                return render_template('manage/create.html', error="Please fill out all fields.",
+                                       name=name, description=description, price=price)
+        except ValueError:
+            return render_template('manage/create.html', error="Price must be a number.",
+                                   name=name, description=description, price=price)
+        conn = db.get_db_connection()
+        cur = db.execute_query(
+            conn=conn,
+            query=constants.CREATE_ITEM_QUERY,
+            args=(name, description, price)
+        )
+        db.execute_query(
+            conn=conn,
+            query=constants.CREATE_INVENTORY_QUERY,
+            args=(cur.lastrowid,)
+        )
+        conn.close()
+        return render_template('manage/create.html', success=f"Item {name} created successfully!")
     return render_template('manage/create.html')
 
 
