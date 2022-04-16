@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 import constants
 import db
@@ -157,14 +157,89 @@ def manage_create():
     return render_template('manage/create.html')
 
 
-@app.route('/manage/edit')
+@app.route('/manage/edit', methods=['GET', 'POST'])
 def manage_edit():
-    return render_template('manage/edit.html')
+    conn = db.get_db_connection()
+    items = db.execute_query(
+        conn=conn,
+        query=constants.GET_ITEMS_QUERY
+    ).fetchall()
+    conn.close()
+    if request.method == 'POST':
+        if len(request.form) == 0:
+            return render_template('manage/edit.html', items=items, warning="Please select an item to edit.")
+        return redirect(url_for('manage_edit_item', item_id=request.form['edit']))
+    return render_template('manage/edit.html', items=items)
 
 
-@app.route('/manage/delete')
+@app.route('/manage/edit/<int:item_id>', methods=['GET', 'POST'])
+def manage_edit_item(item_id):
+    conn = db.get_db_connection()
+    item = db.execute_query(
+        conn=conn,
+        query=constants.GET_ITEM_QUERY,
+        args=(item_id,)
+    ).fetchone()
+    conn.close()
+    if request.method == 'POST':
+        try:
+            name, description, price = request.form['name'], request.form['description'], float(request.form['price'])
+            if not all((name, description, price)):
+                return render_template('manage/edit_details.html', item=item, error="Please fill out all fields.")
+        except ValueError:
+            return render_template('manage/edit_details.html', item=item, error="Price must be a number.")
+        conn = db.get_db_connection()
+        db.execute_query(
+            conn=conn,
+            query=constants.UPDATE_ITEM_QUERY,
+            args=(name, description, price, item_id)
+        )
+        item = db.execute_query(
+            conn=conn,
+            query=constants.GET_ITEM_QUERY,
+            args=(item_id,)
+        ).fetchone()
+        conn.close()
+        return render_template('manage/edit_details.html', item=item, success="Item details updated successfully!")
+    return render_template('manage/edit_details.html', item=item)
+
+
+@app.route('/manage/delete', methods=['GET', 'POST'])
 def manage_delete():
-    return render_template('manage/delete.html')
+    conn = db.get_db_connection()
+    items = db.execute_query(
+        conn=conn,
+        query=constants.GET_ITEMS_QUERY
+    ).fetchall()
+    conn.close()
+    if request.method == 'POST':
+        if len(request.form) == 0:
+            return render_template('manage/delete.html', items=items, warning="No changes were made to the items list.")
+        try:
+            item_deletes = [(key.split('-')[0],) for key in request.form]
+        except ValueError:
+            return render_template('manage/delete.html', items=items, error="Invalid form input; check your POST data.")
+        print(item_deletes)
+        conn = db.get_db_connection()
+        db.execute_many(
+            conn=conn,
+            query=constants.DELETE_ITEM_QUERY,
+            args=item_deletes
+        )
+        items = db.execute_query(
+            conn=conn,
+            query=constants.GET_ITEMS_QUERY
+        ).fetchall()
+        conn.close()
+        if len(item_deletes) > 1:
+            return render_template('manage/delete.html', items=items,
+                                   success=f"Deleted {len(item_deletes)} items successfully!")
+        else:
+            return render_template('manage/delete.html', items=items,
+                                   success=f"Deleted item successfully!")
+    return render_template('manage/delete.html', items=items, warning="Be careful! This action is irreversible. "
+                                                                      "If there are any inventory or shipment entries "
+                                                                      "for this item, they will be deleted as well.")
 
 
 if __name__ == '__main__':

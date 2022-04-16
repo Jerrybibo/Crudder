@@ -7,13 +7,15 @@ GET_SHIPMENTS_QUERY = """SELECT shipments.id as shipment_id, item_id, name, quan
 
 GET_ITEMS_QUERY = "SELECT * FROM items;"
 
+GET_ITEM_QUERY = "SELECT * FROM items WHERE id = ?;"
+
 GET_INVENTORY_QTY_QUERY = "SELECT quantity FROM inventory WHERE item_id = ?;"
 
 CREATE_SHIPMENT_QUERY = "INSERT INTO shipments (item_id, quantity, time_created) VALUES (?, ?, CURRENT_TIMESTAMP)"
 
 CREATE_ITEM_QUERY = "INSERT INTO items (name, description, price) VALUES (?, ?, ?);"
 
-EDIT_ITEM_QUERY = "UPDATE items SET name = ?, description = ?, price = ? WHERE id = ?;"
+UPDATE_ITEM_QUERY = "UPDATE items SET name = ?, description = ?, price = ? WHERE id = ?;"
 
 DELETE_ITEM_QUERY = "DELETE FROM items WHERE id = ?;"
 
