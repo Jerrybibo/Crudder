@@ -176,7 +176,7 @@ def manage_create():
             args=(cur.lastrowid,)
         )
         conn.close()
-        return render_template('manage/create.html', success=f"Item {name} created successfully!")
+        return render_template('manage/create.html', success=f"Item {name} (ID {cur.lastrowid}) created successfully!")
     return render_template('manage/create.html')
 
 
