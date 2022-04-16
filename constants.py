@@ -17,4 +17,4 @@ EDIT_ITEM_QUERY = "UPDATE items SET name = ?, description = ?, price = ? WHERE i
 
 DELETE_ITEM_QUERY = "DELETE FROM items WHERE id = ?;"
 
-UPDATE_INVENTORY_QUERY = "UPDATE inventory SET quantity = quantity + ? WHERE item_id = ?;"
+UPDATE_INVENTORY_QUERY = "UPDATE inventory SET quantity = quantity - ? WHERE item_id = ?;"

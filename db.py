@@ -19,3 +19,10 @@ def execute_query(conn, query, args=None):
         cursor.execute(query)
     conn.commit()
     return cursor
+
+
+def execute_many(conn, query, args):
+    cursor = get_db_cursor(conn)
+    cursor.executemany(query, args)
+    conn.commit()
+    return cursor

@@ -6,11 +6,12 @@ INSERT INTO items (name, description, price) VALUES
     ('Eggs', 'Extra large eggs from the local farm.', 4.99);
 
 INSERT INTO shipments (item_id, quantity, time_created) VALUES
-    (2, 40, '2022-02-01 10:00:00'),
-    (1, 10, '2022-02-01 13:00:00'),
-    (3, 100, '2022-02-04 14:00:00'),
-    (4, 100, '2022-02-05 09:00:00'),
-    (5, 4, '2022-02-07 15:00:00');
+    (2, -40, '2022-02-01 10:00:00'),
+    (1, -10, '2022-02-01 13:00:00'),
+    (3, -100, '2022-02-04 14:00:00'),
+    (3, 30, '2022-02-05 08:30:00'),
+    (4, -100, '2022-02-05 09:00:00'),
+    (5, -4, '2022-02-07 15:00:00');
 
 INSERT INTO inventory (item_id, quantity) VALUES
     (1, 15),

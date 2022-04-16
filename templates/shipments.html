@@ -49,10 +49,10 @@
           <td>{{ shipment["shipment_id"] }}</td>
           <td>{{ shipment["item_id"] }}</td>
           <td>{{ shipment["name"] }}</td>
-            {% if shipment["quantity"] > 0 %}
-              <td><span class="text-success">+{{ shipment["quantity"] }}</span></td>
+            {% if shipment["quantity"] < 0 %}
+              <td><span class="text-success">+{{ shipment["quantity"] * -1 }}</span></td>
             {% else %}
-              <td><span class="text-danger">{{ shipment["quantity"] }}</span></td>
+              <td><span class="text-danger">{{ shipment["quantity"] * -1 }}</span></td>
             {% endif %}
           <td>{{ shipment["time_created"] }}</td>
         </tr>

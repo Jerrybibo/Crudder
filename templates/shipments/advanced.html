@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Crudder - Advanced Shipment{% endblock %}
+{% block sidebar %}
+  <li class="nav-item">
+    <a class="nav-link" href="/index">
+      <span data-feather="home"></span>
+      Dashboard
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/shipments">
+      <span data-feather="truck"></span>
+      Shipments
+    </a>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link active" aria-current="page" href="/manage/create">
+        <span data-feather="plus-square"></span>
+        Create new
+      </a>
+      </li>
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/manage">
+      <span data-feather="check-square"></span>
+      Manage
+    </a>
+  </li>
+{% endblock %}
+{% block header %}Create New Shipment{% endblock %}
+{% block task_buttons %}
+  <a href="/shipments/create" class="btn btn-primary">Simple Interface</a>
+{% endblock %}
+{% block content %}
+{% if success %}
+  <div class="alert alert-success" role="alert">
+    {{ success }}
+  </div>
+{% endif %}
+{% if warning %}
+  <div class="alert alert-warning" role="alert">
+    {{ warning }}
+  </div>
+{% endif %}
+{% if error %}
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+{% endif %}
+<ul><li>To indicate imports/receiving, set the quantity field to a negative value.</li></ul>
+<div class="table-responsive form-group">
+  <form method="post">
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Available Qty.</th>
+          <th scope="col">Quantity to Send</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in inventory %}
+        <tr>
+          <td>{{ item["id"] }}</td>
+          <td>{{ item["name"] }}</td>
+          <td>{{ item["description"] }}</td>
+          <td>{{ item["quantity"] }}</td>
+          <td><label>
+              <input type="number" min="-1000000" max="{{ item["quantity"] }}" name="{{ item["id"] }}-qty" value="0">
+          </label></td>
+          <td>{{ "${:.2f}".format(item["price"]) }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <h1>
+      <button type="submit" class="btn btn-primary me-2">Submit</button>
+      <a href="/shipments"><button type="button" class="btn btn-outline-danger">Cancel</button></a>
+    </h1>
+  </form>
+  </div>
+{% endblock %}
