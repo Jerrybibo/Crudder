@@ -1,3 +1,5 @@
+# Helper methods for database operations
+
 import sqlite3
 
 

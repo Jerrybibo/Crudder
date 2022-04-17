@@ -1,3 +1,5 @@
+# Constants and SQL queries used for the project
+
 GET_INVENTORY_QUERY = "SELECT id, name, description, quantity, price FROM inventory, items WHERE id = item_id;"
 
 CREATE_INVENTORY_QUERY = "INSERT INTO inventory (item_id, quantity) VALUES (?, 0);"

@@ -1,3 +1,6 @@
+-- Script to populate the database with initial data.
+-- Should be run after running the schema.sql script.
+
 INSERT INTO items (name, description, price) VALUES
     ('Coffee', 'Locally sourced whole coffee beans.', 4.49),
     ('Green Tea', 'Premium imported Japanese green tea leaves.', 5.99),

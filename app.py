@@ -1,5 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+# Shopify-Challenge: Crudder
+# Author: @Jerrybibo
+# Date: 2022-04-17
 
+from flask import Flask, render_template, request, redirect, url_for
 import constants
 import db
 
@@ -194,6 +197,7 @@ def manage_edit():
     if request.method == 'POST':
         if len(request.form) == 0:
             return render_template('manage/edit.html', items=items, warning="Please select an item to edit.")
+        # Currently causes issues with Replit's embedded renderer; use project in browser directly instead
         return redirect(url_for('manage_edit_item', item_id=request.form['edit']))
     return render_template('manage/edit.html', items=items)
 
@@ -208,6 +212,7 @@ def manage_edit_item(item_id):
     ).fetchone()
     conn.close()
     if request.method == 'POST':
+        # Ensure that all fields are populated and input types valid
         try:
             name, description, price = request.form['name'], request.form['description'], float(request.form['price'])
             if not all((name, description, price)):

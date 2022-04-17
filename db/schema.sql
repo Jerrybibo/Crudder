@@ -1,3 +1,5 @@
+-- Script to create the database schema.
+
 DROP TABLE IF EXISTS items;
 DROP TABLE IF EXISTS shipments;
 DROP TABLE IF EXISTS inventory;
